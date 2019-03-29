@@ -13,7 +13,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 import m03.uf6.p1.grup07.vista.RenderizadorCeldas;
-import m03.uf6.p1.grup07.vista.ModeloDeTablaSimple;
 
 /**
  *
@@ -26,31 +25,31 @@ public class SelectorMetges extends javax.swing.JFrame {
      */
     public SelectorMetges() {
         initComponents();
-        cbEquipos.removeAllItems();
+        cbMetges.removeAllItems();
         TableModel modelBuit = new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
+                {null, null, null, null, null, null,null},
+                {null, null, null, null, null, null,null},
+                {null, null, null, null, null, null,null},
+                {null, null, null, null, null, null,null},
+                {null, null, null, null, null, null,null},
             },
             new String [] {
-                "nombre", "dorsal", "edad"
+                "numEmpleat", "salariMensual", "codiCompteCorrent", "nom", "cognom1", "cognom2", "numSegSocial", "NIF", "telefon"
             }
         );
         
-        tabJugadores.setModel(modelBuit);
+        tabMetges.setModel(modelBuit);
         RenderizadorCeldas renderizador = new RenderizadorCeldas();
-        for (int i = 0; i < tabJugadores.getColumnCount(); i++) {
-            tabJugadores.getColumnModel().getColumn(i).setCellRenderer(renderizador);
+        for (int i = 0; i < tabMetges.getColumnCount(); i++) {
+            tabMetges.getColumnModel().getColumn(i).setCellRenderer(renderizador);
         }
         
         try{
-            ResultSet resultat = consultaBBDD("SELECT nombre FROM equipos");
-            cbEquipos.addItem(null);
+            ResultSet resultat = consultaBBDD("SELECT numEmpleat FROM metges");
+            cbMetges.addItem(null);
             while(resultat.next()){
-                cbEquipos.addItem(resultat.getString("nombre"));
+                cbMetges.addItem(resultat.getString("numEmpleat"));
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -94,22 +93,22 @@ public class SelectorMetges extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        cbEquipos = new javax.swing.JComboBox();
+        cbMetges = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabJugadores = new javax.swing.JTable();
+        tabMetges = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cbEquipos.addActionListener(new java.awt.event.ActionListener() {
+        cbMetges.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbEquiposActionPerformed(evt);
+                cbMetgesActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Escoja un equipo");
+        jLabel1.setText("Escoja un nif");
 
-        tabJugadores.setModel(new javax.swing.table.DefaultTableModel(
+        tabMetges.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -120,7 +119,7 @@ public class SelectorMetges extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tabJugadores);
+        jScrollPane1.setViewportView(tabMetges);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +132,7 @@ public class SelectorMetges extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbEquipos, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbMetges, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -141,7 +140,7 @@ public class SelectorMetges extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbEquipos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMetges, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
@@ -151,23 +150,22 @@ public class SelectorMetges extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbEquiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEquiposActionPerformed
-        if(cbEquipos.getSelectedIndex() < 0){
+    private void cbMetgesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMetgesActionPerformed
+        if(cbMetges.getSelectedIndex() < 0){
             // Nada que hacer
         }else{
-            String equipo = (String)(cbEquipos.getSelectedItem());
+            String codi = (String)(cbMetges.getSelectedItem());
             try{
                 ResultSet resultat = consultaBBDD(
                         //"SELECT jugadores.nombre, jugadores.dorsal, jugadores.edad"
-                        "SELECT jugadores.id, jugadores.nombre, jugadores.dorsal, jugadores.edad "
-                                + " FROM jugadores "
-                                + "JOIN equipos ON jugadores.id_equipo = equipos.id "
-                                + "WHERE equipos.nombre LIKE '" + equipo + "'");
+                        "SELECT * "
+                                + " FROM metges "
+                                + "WHERE numEmpleat LIKE '" + codi + "'");
                 TableModel model = new ModeloDeTablaSimple(resultat);
-                actualitzaTaula(tabJugadores, model);
+                actualitzaTaula(tabMetges, model);
                 // Afegim un listener per salvar els canvis a la BBDD en modificar
                 // el valor d'un camp de la taula
-                tabJugadores.getModel().addTableModelListener(new TableModelListener() {
+                tabMetges.getModel().addTableModelListener(new TableModelListener() {
                     @Override
                     public void tableChanged(TableModelEvent e) {
                         actualitzaTaulaJugadors(e);
@@ -178,21 +176,28 @@ public class SelectorMetges extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-    }//GEN-LAST:event_cbEquiposActionPerformed
+    }//GEN-LAST:event_cbMetgesActionPerformed
 
     private void actualitzaTaulaJugadors(TableModelEvent e){
         int fila = e.getFirstRow();
         PreparedStatement sentencia = null;
         Connection con = null;
-        TableModel dades = tabJugadores.getModel();
+        TableModel dades = tabMetges.getModel();
         try {
             con = GestorConnexio.getConnection();
-            String consulta = "UPDATE jugadores SET nombre = ?, dorsal = ?, edad = ? WHERE id = ?";
+            String consulta = "UPDATE metges SET numEmpleat = ?, salariMensual = ?, codiCompteCorrent = ?, "
+                    + "nom=?, cognom1=?, cognom2=?, numSegSocial=?, NIF=?, telefon=? WHERE numEmpleat = ?";
             sentencia = con.prepareStatement(consulta);
-            sentencia.setString(1, (String)(dades.getValueAt(fila, 1)));
-            sentencia.setInt(2, Integer.parseInt(dades.getValueAt(fila, 2).toString()));
-            sentencia.setInt(3, Integer.parseInt(dades.getValueAt(fila, 3).toString()));
-            sentencia.setInt(4, Integer.parseInt(dades.getValueAt(fila, 0).toString()));
+            sentencia.setInt(1, Integer.parseInt(dades.getValueAt(fila, 0).toString()));;
+            sentencia.setInt(2, Integer.parseInt(dades.getValueAt(fila, 1).toString()));
+            sentencia.setString(3, (String)(dades.getValueAt(fila, 2)));
+            sentencia.setString(4, (String)(dades.getValueAt(fila, 3)));
+            sentencia.setString(5, (String)(dades.getValueAt(fila, 4)));
+            sentencia.setString(6, (String)(dades.getValueAt(fila, 5)));
+            sentencia.setString(7, (String)(dades.getValueAt(fila, 6)));
+            sentencia.setString(8, (String)(dades.getValueAt(fila, 7)));
+            sentencia.setInt(9, Integer.parseInt(dades.getValueAt(fila, 8).toString()));
+            sentencia.setInt(10, Integer.parseInt(dades.getValueAt(fila, 0).toString()));;
             sentencia.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(SelectorMetges.class.getName()).log(Level.SEVERE, null, ex);
@@ -241,9 +246,9 @@ public class SelectorMetges extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cbEquipos;
+    private javax.swing.JComboBox cbMetges;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabJugadores;
+    private javax.swing.JTable tabMetges;
     // End of variables declaration//GEN-END:variables
 }

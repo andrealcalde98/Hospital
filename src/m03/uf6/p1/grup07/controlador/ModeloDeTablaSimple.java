@@ -1,4 +1,4 @@
-package m03.uf6.p1.grup07.vista;
+package m03.uf6.p1.grup07.controlador;
 
 
 import java.sql.*;
@@ -7,8 +7,8 @@ import javax.swing.table.AbstractTableModel;
 
 class ModeloDeTablaSimple extends AbstractTableModel {
     
-    public ArrayList<String> nombreCampos;
-    public ArrayList<ArrayList> registros;
+    private ArrayList<String> nombreCampos;
+    private ArrayList<ArrayList> registros;
     
     public ModeloDeTablaSimple(ResultSet results) {
         super();
